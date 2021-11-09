@@ -1,0 +1,62 @@
+/*
+Ques3:Given an unsorted array of elements, design an algorithm and implement it using a program 
+to find whether majority element exists or not. Also find median of the array. A majority 
+element is an element that appears more than n/2 times, where n is the size of array.
+Input Format: 
+First line of input will give size n of array. Second line of input will take n space-separated elements of array.
+Output Format: 
+First line of output will be 'yes' if majority element exists, otherwise print 'no'. 
+Second line of output will print median of the array. 
+*/
+
+
+
+#include<iostream>
+#include<map>
+#include<iterator>
+using namespace std;
+
+int main() {
+    
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        map<int,int>m;
+        long long int n;
+        cin>>n;
+        int static arr[1000000];
+        for(int i=0;i<=n-1;i++)
+        {
+            cin>>arr[i];
+        }
+        for(int i=0;i<=n-1;i++)
+        {
+            auto it=m.find(arr[i]);
+            if(it==m.end())
+            {
+                m.insert(pair<int,int>(arr[i],1));
+            }
+            else
+            {
+                it->second+=1;
+            }
+        }
+        int count=0;
+        for(int i=0;i<=m.size();i++)
+        {
+            if(m[arr[i]]>=(n/2)+1)
+            {
+                cout<<"Yes"<<endl;
+                count+=1;
+                break;
+            }
+        }
+        if(count==0)
+        {
+            cout<<"No"<<endl;
+        }
+        cout<<arr[n/2]<<endl;
+    }
+    return 0;
+}

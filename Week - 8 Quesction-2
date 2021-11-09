@@ -1,0 +1,102 @@
+Ques2: Assume that a project of road construction to connect some cities is given to your 
+friend. Map of these cities and roads which will connect them (after construction) is provided 
+to him in the form of a graph. Certain amount of rupees is associated with construction of each 
+road. Your friend has to calculate the minimum budget required for this project. The budget 
+should be designed in such a way that the cost of connecting the cities should be minimum and 
+number of roads required to connect all the cities should be minimum (if there are N cities then 
+only N-1 roads need to be constructed). He asks you for help. Now, you have to help your friend 
+by designing an algorithm which will find minimum cost required to connect these cities. (use 
+Kruskla's algorithm)
+
+*/
+
+
+#include <algorithm>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+#define edge pair<int, int>
+
+class Graph {
+   private:
+  vector<pair<int, edge> > G;  // graph
+  vector<pair<int, edge> > T;  // mst
+  int *parent;
+  int V;  // number of vertices/nodes in graph
+   public:
+  Graph(int V);
+  void AddWeightedEdge(int u, int v, int w);
+  int find_set(int i);
+  void union_set(int u, int v);
+  void kruskal();
+  void print();
+};
+Graph::Graph(int V) {
+  parent = new int[V];
+
+  //i 0 1 2 3 4 5
+  //parent[i] 0 1 2 3 4 5
+  for (int i = 0; i < V; i++)
+    parent[i] = i;
+
+  G.clear();
+  T.clear();
+}
+void Graph::AddWeightedEdge(int u, int v, int w) {
+  G.push_back(make_pair(w, edge(u, v)));
+}
+int Graph::find_set(int i) {
+  if (i == parent[i])
+    return i;
+  else
+    return find_set(parent[i]);
+}
+
+void Graph::union_set(int u, int v) {
+  parent[u] = parent[v];
+}
+void Graph::kruskal() {
+  int i, uRep, vRep;
+  sort(G.begin(), G.end());  // increasing weight
+  for (i = 0; i < G.size(); i++) {
+    uRep = find_set(G[i].second.first);
+    vRep = find_set(G[i].second.second);
+    if (uRep != vRep) {
+      T.push_back(G[i]);  // add to tree
+      union_set(uRep, vRep);
+    }
+  }
+}
+void Graph::print() {
+  cout << "Edge :"
+     << " Weight" << endl;
+  for (int i = 0; i < T.size(); i++) {
+    cout << T[i].second.first << " - " << T[i].second.second << " : "
+       << T[i].first;
+    cout << endl;
+  }
+}
+int main() {
+  Graph g(6);
+  g.AddWeightedEdge(0, 1, 4);
+  g.AddWeightedEdge(0, 2, 4);
+  g.AddWeightedEdge(1, 2, 2);
+  g.AddWeightedEdge(1, 0, 4);
+  g.AddWeightedEdge(2, 0, 4);
+  g.AddWeightedEdge(2, 1, 2);
+  g.AddWeightedEdge(2, 3, 3);
+  g.AddWeightedEdge(2, 5, 2);
+  g.AddWeightedEdge(2, 4, 4);
+  g.AddWeightedEdge(3, 2, 3);
+  g.AddWeightedEdge(3, 4, 3);
+  g.AddWeightedEdge(4, 2, 4);
+  g.AddWeightedEdge(4, 3, 3);
+  g.AddWeightedEdge(5, 2, 2);
+  g.AddWeightedEdge(5, 4, 3);
+  g.kruskal();
+  g.print();
+  return 0;
+}
+
+

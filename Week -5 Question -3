@@ -1,0 +1,53 @@
+Ques3.You have been given two sorted integer arrays of size m and n. Design an algorithm and
+implement it using a program to find list of elements which are common to both. (Time
+Complexity = O(m+n))
+Input Format: 
+First line contains m (the size of first array).
+Second line contains m space-separated integers describing first array.
+Third line contains n (the size of second array).
+Fourth line contains n space-separated integers describing second array.
+Output Format:
+Output will be the list of elements which are common to both.
+*/
+
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+void findCommon(int arr1[],int arr2[],int m,int n)
+{
+    int i = 0, j = 0;
+    while (i < m && j < n) {
+        if (arr1[i] < arr2[j])
+            i++;
+        else if (arr2[j] < arr1[i])
+            j++;
+        else 
+        {
+            cout << arr2[j] << " ";
+            i++;
+            j++;
+        }
+    }
+}
+
+int main(){
+    int m,n;
+    cin>>m;
+    int arr1[m];
+    for(int i=0;i<=m-1;i++)
+    {
+        cin>>arr1[i];
+    }
+    cin>>n;
+    int arr2[n];
+    for(int i=0;i<=n-1;i++)
+    {
+        cin>>arr2[i];
+    }
+    sort(arr1,arr1+m);
+    sort(arr2,arr2+n);
+    findCommon(arr1,arr2,m,n);
+    return 0;
+}
+
